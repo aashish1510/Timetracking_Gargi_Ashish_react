@@ -4,86 +4,109 @@ import { Link, Route, useNavigate, useParams } from 'react-router-dom';
 
 
 export const Task = () => {
-  var id = useParams().id;
+	var id = useParams().id;
 	var navigate = useNavigate()
 	const [taskdata, settaskdata] = useState([])
 
-	var Table=[
+	var Table = [
 		{
-			"TaskName":"timemanagement",
-			"Project":"to track time",
-            "Module":"amazon",
-            "Description":"description",
-			"StartDate":"12-03-2021",
-			"EndDate":"14-2-2024",
-			"TotalHours":"450",
-			"UtilisedHours":"Python"
+			"TaskName": "timemanagement",
+			"Project": "to track time",
+			"Module": "amazon",
+			"Description": "description",
+			"StartDate": "12-03-2021",
+			"EndDate": "14-2-2024",
+			"TotalHours": "450",
+			"UtilisedHours": "Python"
 		}
-	   
+
 	]
-	const fetchtaskdata=()=>{
-		axios.get('http://localhost:4000/task').then(res=>{
+	const fetchtaskdata = () => {
+		axios.get('http://localhost:4000/task').then(res => {
 			settaskdata(res.data.data)
 			console.log(res.data.data);
 		})
 	}
 	useEffect(() => {
 		fetchtaskdata()
+
+		return () => {
+
+		}
+	}, [])
 	
-	  return () => {
-		
-	  }
-	},[])
-	
-	
-	var Project=Table.map(function(row){
+	const logout= async(e)=>{
+        e.preventDefault()
+        
+        localStorage.removeItem("email")
+        localStorage.removeItem("firstname")
+        localStorage.removeItem("role")
+      
+        await navigate("/")  
+      }
+
+
+	var Project = Table.map(function (row) {
 		return <tbody>{
-		
-			taskdata.map((row)=>{
-			
-			   
-			 
-             if(id==row.module._id){
-			  
-			   
-				return(
-			  
-			<tr>
-				<td><Link to={`/Task/${row._id}`}>{row.taskname}</Link></td>	
-        <td><Link to={`/Task/${row._id}`}>{row.discription}</Link></td>	
-				<td><Link to={`/Task/${row._id}`}>{row.startdate}</Link></td>
-				<td><Link to={`/Task/${row._id}`}>{row.enddate}</Link></td>
-				<td><Link to={`/Task/${row._id}`}>{row.totalhours}</Link></td>
-				<td><Link to={`/Task/${row._id}`}>{row.utilisedhours}</Link></td>
-				<td>
-					<Link to="" onClick={() => { deleteData(row._id) }}>DELETE</Link><br></br><br></br>
-					<Link to={`task/${row._id}`} >UPDATE</Link>
-					
-				</td>
-			
-			</tr>
-			
-			) 
+
+			taskdata.map((row) => {
+				const button=(e)=>{
+					e.preventDefault()
+					navigate(`/Task/${row._id}`)
 				}
-				
-		})
-}
-	
+                const update=(e)=>{
+					e.preventDefault()
+					navigate(`/Updatetask/${row._id}`)
+				}
+				const assign=(e)=>{
+					e.preventDefault()
+					navigate(`Users/${row._id}`)
+				}
+
+
+				if (id == row.module._id) {
+
+
+					return (
+
+						<tr>
+							<td><button onClick={button}>{row.taskname}</button></td>
+							<td><button onClick={button}>{row.discription}</button></td>
+							<td><button onClick={button}>{row.startdate}</button></td>
+							<td><button onClick={button}>{row.enddate}</button></td>
+							<td><button onClick={button}>{row.totalhours}</button></td>
+							<td><button onClick={button}>{row.utilisedhours}</button></td>
+							<td>
+								<p>
+								<button class="btn btn-warning"  onClick={() => { deleteData(row._id) }}>DELETE</button>  <button class="btn btn-info" onClick={update} >UPDATE</button>  <button  class="btn btn-secondary" onClick={assign}>ASSIGN</button>
+                                </p>
+							</td>
+
+						</tr>
+
+					)
+				}
+
+			})
+		}
+
 		</tbody>
 	})
 	const deleteData = (Id) => {
-		
-        axios.delete(`http://localhost:4000/task/${Id}`).then(res => {
-            if (res.status == 200) {
-                
-				navigate(`/Task/${id}`)
 
-            }
-        })
-    }
-  return (
-    <div>
- <div class="wrapper">
+		axios.delete(`http://localhost:4000/task/${Id}`).then(res => {
+			if (res.status == 200) {
+            
+				// navigate(`/Task/${id}`)
+			 
+		        window.location.reload()
+
+			}
+		})
+	}
+	return (
+		<div>
+			<div class="wrapper">
 				<nav id="sidebar" class="sidebar js-sidebar">
 					<div class="sidebar-content js-simplebar">
 						<Link class="sidebar-brand" to='/Dashboard'>
@@ -102,14 +125,7 @@ export const Task = () => {
 								</Link>
 							</li>
 
-							<li class="sidebar-item">
-								<Link class="sidebar-link" to="/Roles">
-									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-folder2" viewBox="0 0 16 16">
-										<path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 12.5v-9zM2.5 3a.5.5 0 0 0-.5.5V6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5zM14 7H2v5.5a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5V7z" />
-									</svg> <span class="align-middle">Roles</span>
-								</Link>
-							</li>
-
+							
 							<li class="sidebar-item">
 								<Link class="sidebar-link" to="/Users">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
@@ -138,15 +154,7 @@ export const Task = () => {
 								</Link>
 							</li>
 
-							<li class="sidebar-item">
-								<Link class="sidebar-link" to="/ProjectModules">
-									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-receipt" viewBox="0 0 16 16">
-										<path d="M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v12a.5.5 0 0 1-.053.224l-.5 1a.5.5 0 0 1-.8.13L13 14.707l-.646.647a.5.5 0 0 1-.708 0L11 14.707l-.646.647a.5.5 0 0 1-.708 0L9 14.707l-.646.647a.5.5 0 0 1-.708 0L7 14.707l-.646.647a.5.5 0 0 1-.708 0L5 14.707l-.646.647a.5.5 0 0 1-.708 0L3 14.707l-.646.647a.5.5 0 0 1-.801-.13l-.5-1A.5.5 0 0 1 1 14V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27zm.217 1.338L2 2.118v11.764l.137.274.51-.51a.5.5 0 0 1 .707 0l.646.647.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.509.509.137-.274V2.118l-.137-.274-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0l-.509-.51z" />
-										<path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z" />
-									</svg> <span class="align-middle">Project-Modules</span>
-								</Link>
-							</li>
-
+							
 							<li class="sidebar-item">
 								<Link class="sidebar-link" to="/Status">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-diamond-fill" viewBox="0 0 16 16">
@@ -156,15 +164,6 @@ export const Task = () => {
 								</Link>
 							</li>
 
-							<li class="sidebar-item">
-								<Link class="sidebar-link" to="/Task">
-									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-text" viewBox="0 0 16 16">
-										<path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z" />
-										<path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z" />
-										<path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
-									</svg> <span class="align-middle">Tasks</span>
-								</Link>
-							</li>
 
 							<li class="sidebar-item">
 								<Link class="sidebar-link" to="/UserTask">
@@ -192,6 +191,12 @@ export const Task = () => {
 							<i class="hamburger align-self-center"></i>
 						</a>
 						<div class="navbar-collapse collapse">
+						<ul class="navbar-nav navbar-align"> <svg xmlns="http://www.w3.org/2000/svg" onClick={logout} width="22" height="22" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+  <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+</svg>
+                    <button type='button'class="button" onClick={logout}><h4>LOGOUT</h4></button>
+                            </ul>
 
 						</div>
 					</nav>
@@ -199,8 +204,10 @@ export const Task = () => {
 					<main class="content">
 						<div class="container-fluid p-0">
 
-						<Link to='/TaskForm' class='tag' >Add Task </Link><br></br><br></br><br></br>
- 
+							<Link to='/TaskForm' class='tag' >Add Task </Link><br></br><br></br><br></br>
+
+							<h1 class="h3 mb-3"><strong>Task-List</strong></h1> <br></br>
+
 
 							<div class="row">
 								<div class="col-12 col-lg-12 col-xxl-12 d-flex">
@@ -256,6 +263,6 @@ export const Task = () => {
 				</div>
 			</div>
 
-    </div>
-  )
+		</div>
+	)
 }

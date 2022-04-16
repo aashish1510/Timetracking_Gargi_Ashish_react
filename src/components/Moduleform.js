@@ -79,7 +79,7 @@ console.log(res.data.data);
     
    
 
-    //window.location.href = "http://localhost:3000/Dashboard"
+    
     
     axios.post('http://localhost:4000/module', data).then(res => {
     //   if(res.status ==200){
@@ -94,6 +94,7 @@ console.log(res.data.data);
     //   }
       
     console.log(res.data.data);
+    navigate('/Projects')
    // window.location.href ="http://localhost:3000/ProjectModules/6238a03619d54feed03cf22e"
     })
   }

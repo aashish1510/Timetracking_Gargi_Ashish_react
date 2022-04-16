@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import React from "react"
 import axios from "axios"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 export const UpdateProject = () => {
   var id = useParams().id
-
+var navigate=useNavigate()
   const [data, setdata] = useState('')
   const [projectname, setprojectname] = useState(data.projectname)
   const [description, setdescription] = useState(data.description)
@@ -19,6 +19,7 @@ export const UpdateProject = () => {
     axios.get(`http://localhost:4000/project/${id}`).then(res => {
       setdata(res.data.data)
       console.log(res.data.data);
+      navigate("/Dashboard")
     })
   }
   useEffect(() => {
@@ -42,6 +43,7 @@ export const UpdateProject = () => {
     }
     axios.put(`http://localhost:4000/project`, updateData).then(res => {
       alert('updated successfully')
+      navigate('/Projects')
     })
 
   }

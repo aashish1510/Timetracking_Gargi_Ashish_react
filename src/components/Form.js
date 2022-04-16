@@ -66,7 +66,7 @@ export const Form = () => {
       if(res.status ==200){
         showtoast()
         setTimeout(() => {
-          navigate("/Dashboard")
+          navigate("/Projects")
         }, 2000);
         
       }

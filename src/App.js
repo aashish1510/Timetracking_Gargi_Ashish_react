@@ -21,6 +21,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Moduleform } from './components/Moduleform';
 import { UpdateModule } from './components/UpdateModule';
 import { TaskForm } from './components/TaskForm';
+import { UpdateTask } from './components/UpdateTask';
+import { Login } from './components/Login';
+import { Team } from './components/Team';
 
 
 
@@ -38,7 +41,7 @@ function App() {
 
 
 <Routes>
-  <Route path='' element={<Dashboard/>}></Route>
+  <Route path='' element={<Login/>}></Route>
   <Route path='/Dashboard' element={<Dashboard/>}></Route>
   <Route path='/ProjectModules/:id' element={<ProjectModules/>}></Route>
   <Route path='/Projects' element={<Projects/>}></Route>
@@ -46,7 +49,7 @@ function App() {
   <Route path='/Roles' element={<Roles/>}></Route>
   <Route path='/Status' element={<Status/>}></Route>
   <Route path='/Task/:id' element={<Task/>}></Route>
-  <Route path='/Users' element={<User/>}></Route>
+  <Route path='/Task/:id/Users/:id' element={<User/>}></Route>
   <Route path='/UserTask' element={<UserTask/>}></Route>
   <Route path='/Form' element={<Form/>}></Route>
   <Route path='/Priority' element={<Priority/>}></Route>
@@ -54,7 +57,10 @@ function App() {
   <Route path='/Moduleform' element={<Moduleform/>}></Route>
   <Route path='/ProjectModules/:id/module/:id1' element={<UpdateModule/>}></Route>
   <Route path='/TaskForm' element={<TaskForm/>}></Route>
-  
+  <Route path='/Updatetask/:id' element={<UpdateTask/>}></Route>
+  <Route path='/Users' element={<User/>}></Route>
+  <Route path='/Team/:id' element={<Team/>}></Route>
+
   
 
   
