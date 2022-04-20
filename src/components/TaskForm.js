@@ -23,6 +23,8 @@ export const TaskForm = () => {
   const [UtilisedHours, setUtilisedHours] = useState('')
   const [user, setuser] = useState([])
   const [userid, setuserid] = useState('')
+  const [status, setstatus] = useState([])
+  const [statusid, setstatusid] = useState('')
 
   const getproject = async () => {
     await axios.get("http://localhost:4000/project").then((res) => {
@@ -42,11 +44,18 @@ export const TaskForm = () => {
       console.log(res.data.data);
     })
   }
+  const getstatus = async () => {
+    await axios.get("http://localhost:4000/status").then((res) => {
+      setstatus(res.data.data)
+      console.log(res.data.data);
+    })
+  }
   useEffect(() => {
 
     getproject()
     getpriority()
     getuser()
+    getstatus()
   }, [])
 
 
@@ -72,6 +81,12 @@ export const TaskForm = () => {
 
     console.log(e.target.value)
     setuserid(e.target.value)
+
+  }
+  const StatusChangehandler = (e) => {
+
+    console.log(e.target.value)
+    setstatusid(e.target.value)
 
   }
 
@@ -155,7 +170,8 @@ export const TaskForm = () => {
     totalhours: TotalHours,
     utilisedhours: UtilisedHours,
     priority: priorityid,
-    user:userid
+    user:userid,
+    status:statusid
   }
 
   return (
@@ -215,6 +231,22 @@ export const TaskForm = () => {
                   <option value={row._id}>{row.firstname}</option>
                 )
               }
+            })
+            
+            }
+          </select>
+          {userid}
+        </div>
+        <div class="form-group">
+          <label><b>Status</b></label>
+          <select class="form-control" onChange={StatusChangehandler}>
+            {
+              status.map((row) => {
+               
+                return (
+                  <option value={row._id}>{row.statusname}</option>
+                )
+              
             })
             
             }

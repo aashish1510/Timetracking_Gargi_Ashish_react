@@ -55,6 +55,7 @@ export const Login = () => {
                 localStorage.setItem("email",res.data.data.email) 
                 localStorage.setItem("firstname",res.data.data.firstname)
                 localStorage.setItem("role",res.data.data.role.roleName)
+                localStorage.setItem("id",res.data.data.role._id)
                 showtoast()
                 setTimeout(() => {
                     if(res.data.data.role._id==="624c6d75efbeec19caf8693d")
